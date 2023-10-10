@@ -1,0 +1,141 @@
+def test1():
+    from urllib.request import urlopen
+    url = "https://www.naver.com/"
+    html = urlopen(url)
+    print(html.read())
+
+# test1()
+
+
+def test2():
+    from urllib.request import urlopen
+    from bs4 import BeautifulSoup
+    
+    
+    url = "https://www.naver.com/"
+    html = urlopen(url)
+    bs_obj = BeautifulSoup(html.read(), "html.parser")
+    print(bs_obj)
+    
+# test2()
+
+
+def test3():
+    from bs4 import BeautifulSoup
+    
+    html_str = "<html><div>hello</div></html>"
+    bs_obj = BeautifulSoup(html_str, "html.parser")
+    print(bs_obj)
+    print(bs_obj.find("div"))
+    print(bs_obj.find("div").text)
+    
+# test3()
+
+
+def test4():
+    from bs4 import BeautifulSoup
+    
+    
+    html_str = "<html><div>hello</div></html>"
+    bs_obj = BeautifulSoup(html_str, "html.parser")
+    print(bs_obj)
+    print(bs_obj.select_one("div"))
+    print(bs_obj.select_one("div").text)
+    
+    
+# test4()
+
+
+def test5():
+    from bs4 import BeautifulSoup
+    
+    html_str = """
+        <html>
+            <body>
+                <ul>
+                    <li>hello</li>
+                    <li>Hi</li>
+                    <li>Welcome</li>
+                </ul>
+            </body>
+        </html>
+    """
+    bs_obj = BeautifulSoup(html_str, "html.parser")
+    ul = bs_obj.find("ul")
+    li = ul.find("li")
+    print(li)
+    
+    
+    li = bs_obj.find("ul li")
+    print(li) # 이거는 한 번에 출력할 수 없음.
+    
+    li = bs_obj.select_one("ul li")
+    print(li)
+    print(li.text)
+    
+    lis = ul.findAll("li")
+    print(lis)
+    
+    lis = ul.select("ul li")
+    print(lis)
+    
+    for i in lis:
+        print(i.text)
+    
+    
+# test5()
+
+
+def test6():
+    from urllib.request import urlopen
+    from bs4 import BeautifulSoup
+    
+    url = "https://www.yes24.com/"
+    html = urlopen(url)
+    bs_obj = BeautifulSoup(html.read(), "html.parser")
+    
+    ul = bs_obj.find("ul")
+    li = ul.find("li",{"class" : "cate001"})
+    em = ul.find("em")
+    print(em.text)
+    
+    em = bs_obj.select_one("ul > li.cate001 em")
+    print(em.text)
+# test6()
+
+
+def test7():
+    from urllib.request import urlopen
+    from bs4 import BeautifulSoup
+    
+    url = "https://www.yes24.com/"
+    html = urlopen(url)
+    bs_obj = BeautifulSoup(html.read(), "html.parser")
+    # print(bs_obj)
+    
+    
+    cate_list1 = []
+    cate_list2 = []
+    
+    ul = bs_obj.find("ul", {"class" : "cateLi"})
+    # print(ul)
+    
+    
+    li_list = ul.findAll("li")
+    
+    for item in li_list:
+        a =item.find("a")
+        em = a.find("em")
+        cate_list1.append(item.text)
+    
+    
+    li_list2 = ul.select("ul.cateLi li a")
+    
+    for item in li_list2:
+        cate_list2.append(item.text)
+    
+    print(cate_list1)
+    print("------------")
+    print(cate_list2)
+# test7()
+
